@@ -38,13 +38,16 @@ const G = {
 	METEOR_SPEED: 1,
 	METEOR_ROTATION_SPEED: 0.1,
 	METEOR_SPAWN_RATE: 60,
-	PLAYER_INPUT_FRAMES: 10
+	PLAYER_INPUT_FRAMES: 10,
+	BOOST_SPEED: 1.7
 };
 
 options = {
 	viewSize: {x: G.WIDTH, y: G.HEIGHT},
-	seed: 10,
-	theme: "pixel"
+	seed: 100235821,
+	theme: "pixel",
+	isReplayEnabled: true,
+	isPlayingBgm: true
 };
 
 /**
@@ -159,18 +162,16 @@ function characterController()
 
 	if(player.move)
 	{
+		play("hit");
+		color("cyan");
 		if(player.isMovingLeft)
 		{
-			color("cyan");
 			line(player.pos.x, player.pos.y, player.pos.x - G.LANE_WIDTH, player.pos.y, 5);
 			player.pos.x -= G.LANE_WIDTH;
-			play("laser");
 		} else
 		{
-			color("cyan");
 			line(player.pos.x, player.pos.y, player.pos.x + G.LANE_WIDTH, player.pos.y, 5);
 			player.pos.x += G.LANE_WIDTH;
-			play("laser");
 		}
 		player.move = false;
 	}
@@ -204,6 +205,7 @@ function inputTimer()
 			player.frameTimerEnabled = false;
 		}else if(player.frameTimer >= G.PLAYER_INPUT_FRAMES)
 		{
+			play("jump");
 			player.isBoosting = true;
 			player.frameTimer = 0;
 			player.frameTimerEnabled = false;
@@ -213,7 +215,7 @@ function inputTimer()
 
 function boostFunction()
 {
-	player.pos.y -= 1;
+	player.pos.y -= G.BOOST_SPEED;
 	color("cyan");
 	particle(
 		player.pos.x - 2.5,
@@ -283,6 +285,10 @@ function meteorManager()
 		if (collided) {
 			play("explosion");
 			end();
+		}
+		if(m.pos.y > G.HEIGHT)
+		{
+			//play("jump");
 		}
 		return (m.pos.y > G.HEIGHT);
 	});
