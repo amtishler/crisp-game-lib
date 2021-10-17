@@ -241,11 +241,11 @@ declare function rewind();
 declare function vec(x?: number | VectorLike, y?: number): Vector;
 
 // Return random number
-declare function rnd(lowOrHigh?: number, high?: number): number;
+declare function rnd(lowOrHigh?: number, high?: number);
 // Return random integer
-declare function rndi(lowOrHigh?: number, high?: number): number;
+declare function rndi(lowOrHigh?: number, high?: number);
 // Return plus of minus random number
-declare function rnds(lowOrHigh?: number, high?: number): number;
+declare function rnds(lowOrHigh?: number, high?: number);
 
 // Input (mouse, touch, keyboard)
 declare type Input = {

@@ -141,7 +141,7 @@
               return Math.atan2(x.y - this.y, x.x - this.x);
           }
           else {
-              return Math.atan2(y - this.y, x - this.x);
+              return Math.atan2(x - this.y, y - this.x);
           }
       }
       distanceTo(x, y) {
@@ -1004,14 +1004,14 @@ l l l
   function letters(isCharacter, str, x, y, options) {
       if (typeof x === "number") {
           if (typeof y === "number") {
-              return print(str, x, y, Object.assign({ isCharacter, isCheckingCollision: true, color: currentColor }, options));
+              return print(str, x - letterSize / 2, y - letterSize / 2, Object.assign({ isCharacter, isCheckingCollision: true, color: currentColor }, options));
           }
           else {
               throw "invalid params";
           }
       }
       else {
-          return print(str, x.x, x.y, Object.assign({ isCharacter, isCheckingCollision: true, color: currentColor }, y));
+          return print(str, x.x - letterSize / 2, x.y - letterSize / 2, Object.assign({ isCharacter, isCheckingCollision: true, color: currentColor }, y));
       }
   }
   const dotCount = 6;
@@ -1055,8 +1055,6 @@ l l l
   }
   function print(_str, x, y, _options = {}) {
       const options = mergeDefaultOptions(_options);
-      x -= (letterSize / 2) * options.scale.x;
-      y -= (letterSize / 2) * options.scale.y;
       const bx = Math.floor(x);
       let str = _str;
       let px = bx;
@@ -2459,10 +2457,7 @@ image-rendering: pixelated;
   function drawLine$1(p, l, thickness, isAddingToTmp = false) {
       let isDrawing = true;
       if (theme.name === "shape" || theme.name === "shapeDark") {
-          if (currentColor !== "transparent") {
-              drawLine(p.x, p.y, p.x + l.x, p.y + l.y, thickness);
-          }
-          isDrawing = false;
+          drawLine(p.x, p.y, p.x + l.x, p.y + l.y, thickness);
       }
       const t = Math.floor(clamp$1(thickness, 3, 10));
       const lx = Math.abs(l.x);
@@ -3051,7 +3046,7 @@ image-rendering: pixelated;
   }
   function addGameScript() {
       let gameName = window.location.search.substring(1);
-      gameName = gameName.replace(/[^A-Za-z0-9_-]/g, "");
+      gameName = gameName.replace(/\W/g, "");
       if (gameName.length === 0) {
           return;
       }
